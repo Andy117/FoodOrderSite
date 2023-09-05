@@ -1,9 +1,9 @@
 <?php include('partials/menu.php');?>
 
 <main>
-    <title class="wrapper">
+    <div class="wrapper">
         <h1>Administrar Categoria</h1>
-    </title>
+    </div>
 </main>
 
 <?php include('partials/footer.php');?>

@@ -27,3 +27,6 @@
             <div class="clearfix"></div>
         </div>
     </main>
+    <?php
+    include('partials/footer.php');
+?>
