@@ -6,7 +6,6 @@
 }
 
 .wrapper{
-    
     padding: 1%;
     width: 80%;
     margin: 0 auto;
@@ -42,13 +41,13 @@ header ul li a{
 }
 
 header ul li a:hover{
-    color: #ff6b81;
+    color: #ff4757;
 }
 
 /*CSS para el contenido principal*/
 main{
     background-color: #f1f2f6;
-
+    padding: 3% 0;
 }
 
 .col-4{
