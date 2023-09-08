@@ -1,199 +1,249 @@
 <?php include('partials/menu.php'); ?>
 
-<main>
-    <div class="main-content">
-        <div class="wrapper">
-            <h1>Agregar Platillo</h1> <br><br>
-            <?php 
-                if(isset($_POST['upload']))
-                {
-                    echo $_SESSION['upload'];
-                    unset($_SESSION['upload']);
-                }
-            ?>
-            <form action="" method="POST" enctype="multipart/form-data">
-                <table class="tbl-30">
-                    <tr>
-                        <td>Nombre: </td>
-                        <td>
-                            <input type="text" name="title" placeholder="Nombre del platillo">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Descripción: </td>
-                        <td>
-                            <textarea name="description" id="" cols="30" rows="5" placeholder="Descripción del platillo"></textarea>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Precio: </td>
-                        <td>
-                            <input type="number" name="price">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Seleccionar imagen: </td>
-                        <td>
-                            <input type="file" name="image">
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Categoria: </td>
-                        <td>
-                            <select name="category">
-                                <?php 
-                                    //get all the active categories from the database
-                                    $sql = "SELECT * FROM  tbl_category WHERE active = 'Yes'";
-                                    //executing query
-                                    $res = mysqli_query($conn, $sql);
-                                    //count rows to check whether we have categories or not
-                                    $count = mysqli_num_rows($res);
+<div class="main-content">
+    <div class="wrapper">
+        <h1>Agregar Platillo</h1>
 
-                                    //if count is > 0, we have categories
-                                    if($count > 0)
-                                    {
-                                        //we have categories
-                                        while($row = mysqli_fetch_assoc($res))
-                                        {
-                                            //get details of categories
-                                            $id = $row['id'];
-                                            $title = $row['title'];
+        <br><br>
 
-                                            ?>
-                                                <option value="<?php echo $id; ?>"><?php echo $title; ?></option>
-                                            <?php
-                                        }
-                                    }else
+        <?php 
+            if(isset($_SESSION['upload']))
+            {
+                echo $_SESSION['upload'];
+                unset($_SESSION['upload']);
+            }
+        ?>
+
+        <form action="" method="POST" enctype="multipart/form-data">
+        
+            <table class="tbl-30">
+
+                <tr>
+                    <td>Titulo: </td>
+                    <td>
+                        <input type="text" name="title" placeholder="Titulo del Platillo">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Descripcion: </td>
+                    <td>
+                        <textarea name="description" cols="30" rows="5" placeholder="Descripcion del Platillo."></textarea>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Precio: </td>
+                    <td>
+                        <input type="number" name="price">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Seleccionar Imagen: </td>
+                    <td>
+                        <input type="file" name="image">
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Categoria: </td>
+                    <td>
+                        <select name="category">
+
+                            <?php 
+                                //Create PHP Code to display categories from Database
+                                //1. CReate SQL to get all active categories from database
+                                $sql = "SELECT * FROM tbl_category WHERE active='Yes'";
+                                
+                                //Executing qUery
+                                $res = mysqli_query($conn, $sql);
+
+                                //Count Rows to check whether we have categories or not
+                                $count = mysqli_num_rows($res);
+
+                                //IF count is greater than zero, we have categories else we donot have categories
+                                if($count>0)
+                                {
+                                    //WE have categories
+                                    while($row=mysqli_fetch_assoc($res))
                                     {
-                                        //no categories found
+                                        //get the details of categories
+                                        $id = $row['id'];
+                                        $title = $row['title'];
+
                                         ?>
-                                            <option value="0">Sin Categorias</option>
+
+                                        <option value="<?php echo $id; ?>"><?php echo $title; ?></option>
+
                                         <?php
                                     }
-                                ?>
-                            </select>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Destacado: </td>
-                        <td>
-                            <input type="radio" name="featured" value="Yes"> Yes
-                            <input type="radio" name="featured" value="No"> No
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Activo: </td>
-                        <td>
-                            <input type="radio" name="active" value="Yes"> Yes
-                            <input type="radio" name="active" value="No"> No
-                        </td>
-                    </tr>
-                    <tr>
-                        <td colspan="2">
-                            <input type="submit" name="submit" value="Agregar Platillo" class="btn-secondary">
-                        </td>
-                    </tr>
-                </table>
-            </form>
+                                }
+                                else
+                                {
+                                    //WE do not have category
+                                    ?>
+                                    <option value="0">Categoria No Encontrada</option>
+                                    <?php
+                                }
+                            
 
-            <?php
-                if(isset($_POST['submit']))
+                                //2. Display on Drpopdown
+                            ?>
+
+                        </select>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Presentado: </td>
+                    <td>
+                        <input type="radio" name="featured" value="Yes"> Si 
+                        <input type="radio" name="featured" value="No"> No
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>Activo: </td>
+                    <td>
+                        <input type="radio" name="active" value="Yes"> Si 
+                        <input type="radio" name="active" value="No"> No
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">
+                        <input type="submit" name="submit" value="Agregar Platillo" class="btn-secondary">
+                    </td>
+                </tr>
+
+            </table>
+
+        </form>
+
+        
+        <?php 
+
+            //CHeck whether the button is clicked or not
+            if(isset($_POST['submit']))
+            {
+                //Add the Food in Database
+                //echo "Clicked";
+                
+                //1. Get the DAta from Form
+                $title = $_POST['title'];
+                $description = $_POST['description'];
+                $price = $_POST['price'];
+                $category = $_POST['category'];
+
+                //Check whether radion button for featured and active are checked or not
+                if(isset($_POST['featured']))
                 {
-                    //add foot in the database
-
-                    //get the data from form
-                    $title = $_POST['title'];
-                    $description = $_POST['description'];
-                    $price = $_POST['price'];
-                    $category = $_POST['category'];
-                    
-                    //check the radio button for featured and active are checked or not
-
-                    if(isset($_POST['featured']))
-                    {
-                        $featured = $_POST['featured'];
-                    }else
-                    {
-                        $featured = "No";
-                    }
-
-                    if(isset($_POST['active']))
-                    {
-                        $active = $_POST['active'];
-                    }else
-                    {
-                        $active = "No";
-                    }
-
-                    //uploade the image if selected
-                    //check if there's an img selected
-                    if(isset($_FILES['image']['name']))
-                    {
-                        //get the details of the img
-                        $image_name = $_FILES['image']['name'];
-
-                        //check whether the img is selected or not
-                        if($image_name != "")
-                        {
-                            //get the extension o f the img
-                            $ext = end(explode('.', $image_name));
-                            //create new name for image
-
-                            $image_name = "Food-Name-".rand(0000,9999).".".$ext;
-
-                            //source path
-                            $src = $_FILES['image']['tmp_name'];
-
-                            //destionation path
-                            $dst = "../images/food/".$image_name;
-
-                            $upload = move_uploaded_file($src, $dst);
-
-                            //check if uploaded
-                            if($upload==false)
-                            {
-                                $_SESSION['upload'] = "<div class='error'>Fallo al guardar imagen...</div>";
-                                header('location:'.SITEURL.'admin/add-food.php');
-                                die();
-                            }
-                        }
-                    }else
-                    {
-                        $image_name =""; //default value of the img
-                    }
-
-                    //insert into database
-                    //create a sql query to save or add food
-                    //for numerical values we dont need ' '
-                    $sql2 = "INSERT INTO tbl_food SET
-                        title = '$title',
-                        description = '$description',
-                        price = $price,
-                        image_name = '$image_name',
-                        category_id = $category,
-                        featured = '$featured',
-                        active = '$active'
-                    ";
-
-                    //execute the query
-                    $res2 = mysqli_query($conn, $sql2);
-
-                    //check if data was inserted
-                    if($res2 == true)
-                    {
-                        $_SESSION['add'] = "<div class='success'>Se agregó la comida exitosamente!</div>";
-                        header('location:'.SITEURL.'admin/manage-food.php');
-                    }else
-                    {
-                        $_SESSION['add'] = "<div class='error'>Error al agregar comida...</div>";
-                        header('location:'.SITEURL.'admin/manage-food.php');
-                    }
-
-                    //redirect with message to manage food page
+                    $featured = $_POST['featured'];
                 }
-            ?>
-        </div>
+                else
+                {
+                    $featured = "No"; //SEtting the Default Value
+                }
+
+                if(isset($_POST['active']))
+                {
+                    $active = $_POST['active'];
+                }
+                else
+                {
+                    $active = "No"; //Setting Default Value
+                }
+
+                //2. Upload the Image if selected
+                //Check whether the select image is clicked or not and upload the image only if the image is selected
+                if(isset($_FILES['image']['name']))
+                {
+                    //Get the details of the selected image
+                    $image_name = $_FILES['image']['name'];
+
+                    //Check Whether the Image is Selected or not and upload image only if selected
+                    if($image_name!="")
+                    {
+                        // Image is SElected
+                        //A. REnamge the Image
+                        //Get the extension of selected image (jpg, png, gif, etc.) "vijay-thapa.jpg" vijay-thapa jpg
+                        $fileNameParts = explode('.', $image_name);
+                        $ext = end($fileNameParts);
+
+                        // Create New Name for Image
+                        $image_name = "Food-Name-".rand(0000,9999).".".$ext; //New Image Name May Be "Food-Name-657.jpg"
+
+                        //B. Upload the Image
+                        //Get the Src Path and DEstinaton path
+
+                        // Source path is the current location of the image
+                        $src = $_FILES['image']['tmp_name'];
+
+                        //Destination Path for the image to be uploaded
+                        $dst = "../images/food/".$image_name;
+
+                        //Finally Uppload the food image
+                        $upload = move_uploaded_file($src, $dst);
+
+                        //check whether image uploaded of not
+                        if($upload==false)
+                        {
+                            //Failed to Upload the image
+                            //REdirect to Add Food Page with Error Message
+                            $_SESSION['upload'] = "<div class='error'>Fallo al Cargar la Imagen.</div>";
+                            header('location:'.SITEURL.'admin/add-food.php');
+                            //STop the process
+                            die();
+                        }
+
+                    }
+
+                }
+                else
+                {
+                    $image_name = ""; //Setting Default Value as blank
+                }
+
+                //3. Insert Into Database
+
+                //Create a SQL Query to Save or Add food
+                // For Numerical we do not need to pass value inside quotes '' But for string value it is compulsory to add quotes ''
+                $sql2 = "INSERT INTO tbl_food SET 
+                    title = '$title',
+                    description = '$description',
+                    price = $price,
+                    image_name = '$image_name',
+                    category_id = $category,
+                    featured = '$featured',
+                    active = '$active'
+                ";
+
+                //Execute the Query
+                $res2 = mysqli_query($conn, $sql2);
+
+                //CHeck whether data inserted or not
+                //4. Redirect with MEssage to Manage Food page
+                if($res2 == true)
+                {
+                    //Data inserted Successfullly
+                    $_SESSION['add'] = "<div class='success'>Platillo Agregado Correctamente.</div>";
+                    header('location:'.SITEURL.'admin/manage-food.php');
+                }
+                else
+                {
+                    //FAiled to Insert Data
+                    $_SESSION['add'] = "<div class='error'>Fallo al Agregar el Platillo.</div>";
+                    header('location:'.SITEURL.'admin/manage-food.php');
+                }
+
+                
+            }
+
+        ?>
+
+
     </div>
-</main>
+</div>
 
 <?php include('partials/footer.php'); ?>
